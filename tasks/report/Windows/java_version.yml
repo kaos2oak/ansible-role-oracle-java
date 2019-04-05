@@ -18,4 +18,4 @@
       Latest version: {{ latest_java_version }}
   debug:
     msg: "{{ msg.split('\r\n')[:-1] }}"
-  when: latest_java_version != java_version
+  when: latest_java_version and latest_java_version != java_version

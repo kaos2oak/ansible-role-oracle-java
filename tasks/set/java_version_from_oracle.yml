@@ -4,14 +4,22 @@
     return_content: true
   register: baseline_text
   delegate_to: 127.0.0.1
+  failed_when: false
+
+- name: Set latest_java_version_list
+  set_fact:
+    latest_java_version_list: "{{ baseline_text.content | regex_search(regexp,'\\1') }}"
+  vars:
+    regexp: '(^\d+\.*\d*\.*\d*)\s+'
 
 - name: Version list from Oracle
   debug:
-    var: baseline_text.content
-    verbosity: 2
+    var: latest_java_version_list
+    # verbosity: 2
 
 - name: Set latest_java_version to latest modern Java available from Oracle
   set_fact:
-    latest_java_version: "{{ baseline_text.content | regex_search(regexp,'\\1') | first }}"
+    latest_java_version: "{{ latest_java_version_list | first }}"
   vars:
     regexp: '(^\d+\.*\d*\.*\d*)\s+'
+  when: latest_java_version_list != ''

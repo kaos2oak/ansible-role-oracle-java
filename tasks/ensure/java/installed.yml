@@ -3,4 +3,3 @@
 
 - name: Ensure Java install is done
   include_tasks: "install/{{ ansible_facts.os_family }}/done.yml"
-
